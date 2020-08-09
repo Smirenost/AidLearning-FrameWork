@@ -1,6 +1,4 @@
 # -*- coding: utf-8 -*-
-
-
 from cvs import *
 from remi.gui import *
 
