@@ -7,7 +7,6 @@ from cvs import *
 
 print("import tensorflow...wait...")
 
-
 parser = argparse.ArgumentParser()
 parser.add_argument("--model", type=int, default=50)
 parser.add_argument("--cam", type=int, default=0)
@@ -40,8 +39,9 @@ def main():
                 img = cvs.flip(img, 0)
 
             input_image, display_image, output_scale = posenet.read_cap(
-                img, scale_factor=args.scale_factor, output_stride=output_stride
-            )
+                img,
+                scale_factor=args.scale_factor,
+                output_stride=output_stride)
 
             (
                 heatmaps_result,
@@ -94,7 +94,9 @@ class MyApp(App):
 
     def main(self):
         # creating a container VBox type, vertical (you can use also HBox or Widget)
-        main_container = gui.VBox(width=360, height=680, style={"margin": "0px auto"})
+        main_container = gui.VBox(width=360,
+                                  height=680,
+                                  style={"margin": "0px auto"})
 
         self.aidcam = OpencvVideoWidget(self, width=340, height=480)
         self.aidcam.style["margin"] = "10px"
@@ -103,7 +105,10 @@ class MyApp(App):
         # The post request must specify in the header the widget identifier and the function name that will be used to pass the file data
         self.aidcam.set_identifier("myimage_receiver")
         main_container.append(self.aidcam)
-        self.lbl = gui.Label("This show FPS!", width=360, height=30, margin="10px")
+        self.lbl = gui.Label("This show FPS!",
+                             width=360,
+                             height=30,
+                             margin="10px")
         main_container.append(self.lbl)
 
         return main_container

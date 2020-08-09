@@ -39,8 +39,10 @@ def main():
             image = detection_graph.get_tensor_by_name("image:0")
             heatmaps = detection_graph.get_tensor_by_name("heatmap:0")
             offsets = detection_graph.get_tensor_by_name("offset_2:0")
-            displacementFwd = detection_graph.get_tensor_by_name("displacement_fwd_2:0")
-            displacementBwd = detection_graph.get_tensor_by_name("displacement_bwd_2:0")
+            displacementFwd = detection_graph.get_tensor_by_name(
+                "displacement_fwd_2:0")
+            displacementBwd = detection_graph.get_tensor_by_name(
+                "displacement_bwd_2:0")
 
             fcount = -1
             start = time.time()
@@ -128,7 +130,8 @@ def main():
                     px = (rx) * 16 + ofx
                     py = (ry) * 16 + ofy
                     if maxheat > 0.7:
-                        cvs.circle(tmpimg, (int(px), int(py)), 3, colors[k], -1)
+                        cvs.circle(tmpimg, (int(px), int(py)), 3, colors[k],
+                                   -1)
                         keypoint.append(int(px))
                         keypoint.append(int(py))
                     else:
@@ -152,11 +155,14 @@ def main():
                     ckeypoint.append(keypoint[2 * i + 2 + 1])
 
                 for pair in pairs:
-                    if ckeypoint[2 * pair[0]] > 0 and ckeypoint[2 * pair[1]] > 0:
+                    if ckeypoint[2 * pair[0]] > 0 and ckeypoint[2 *
+                                                                pair[1]] > 0:
                         cvs.line(
                             tmpimg,
-                            (ckeypoint[2 * pair[0]], ckeypoint[2 * pair[0] + 1]),
-                            (ckeypoint[2 * pair[1]], ckeypoint[2 * pair[1] + 1]),
+                            (ckeypoint[2 * pair[0]],
+                             ckeypoint[2 * pair[0] + 1]),
+                            (ckeypoint[2 * pair[1]],
+                             ckeypoint[2 * pair[1] + 1]),
                             (0, 0, 255),
                             1,
                         )
@@ -175,7 +181,9 @@ class MyApp(App):
 
     def main(self):
         # creating a container VBox type, vertical (you can use also HBox or Widget)
-        main_container = gui.VBox(width=360, height=680, style={"margin": "0px auto"})
+        main_container = gui.VBox(width=360,
+                                  height=680,
+                                  style={"margin": "0px auto"})
 
         self.aidcam = OpencvVideoWidget(self, width=340, height=480)
         self.aidcam.style["margin"] = "10px"
@@ -184,9 +192,11 @@ class MyApp(App):
         main_container.append(self.aidcam)
 
         # label show fps
-        self.lbl = gui.Label(
-            "This show FPS!", width=360, height=30, left="100px", margin="10px"
-        )
+        self.lbl = gui.Label("This show FPS!",
+                             width=360,
+                             height=30,
+                             left="100px",
+                             margin="10px")
         main_container.append(self.lbl)
 
         return main_container

@@ -6,15 +6,17 @@ class MyApp(App):
         super(MyApp, self).__init__(*args)
 
     def main(self):
-        wid = gui.VBox(
-            width=500, height=500, style={"margin": "5px auto", "padding": "10px"}
-        )
+        wid = gui.VBox(width=500,
+                       height=500,
+                       style={
+                           "margin": "5px auto",
+                           "padding": "10px"
+                       })
 
-        lbl_description = gui.Label(
-            """Example about TableWidget usage.
+        lbl_description = gui.Label("""Example about TableWidget usage.
                                     Change rows and columns count in order to see the behaviour.
                                     After changing the size, 'Fill the table' content by means of the button."""
-        )
+                                    )
 
         wid.append(lbl_description)
 
@@ -62,7 +64,8 @@ class MyApp(App):
     def fill_table(self, emitter, table):
         for ri in range(table.row_count()):
             for ci in range(table.column_count()):
-                table.item_at(ri, ci).set_text("row:%s,column:%s" % (str(ri), str(ci)))
+                table.item_at(ri, ci).set_text("row:%s,column:%s" %
+                                               (str(ri), str(ci)))
 
     def on_use_title_change(self, emitter, value, table):
         value = value == "true"

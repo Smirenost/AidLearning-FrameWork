@@ -21,13 +21,12 @@ def _process_input(source_img, scale_factor=1.0, output_stride=16):
         source_img.shape[0] * scale_factor,
         output_stride=output_stride,
     )
-    scale = np.array(
-        [source_img.shape[0] / target_height, source_img.shape[1] / target_width]
-    )
+    scale = np.array([
+        source_img.shape[0] / target_height, source_img.shape[1] / target_width
+    ])
 
-    input_img = cv2.resize(
-        source_img, (target_width, target_height), interpolation=cv2.INTER_LINEAR
-    )
+    input_img = cv2.resize(source_img, (target_width, target_height),
+                           interpolation=cv2.INTER_LINEAR)
     input_img = cv2.cvtColor(input_img, cv2.COLOR_BGR2RGB).astype(np.float32)
     input_img = input_img * (2.0 / 255.0) - 1.0
     input_img = input_img.reshape(1, target_height, target_width, 3)
@@ -47,12 +46,12 @@ def read_imgfile(path, scale_factor=1.0, output_stride=16):
 
 
 def draw_keypoints(
-    img,
-    instance_scores,
-    keypoint_scores,
-    keypoint_coords,
-    min_pose_confidence=0.5,
-    min_part_confidence=0.5,
+        img,
+        instance_scores,
+        keypoint_scores,
+        keypoint_coords,
+        min_pose_confidence=0.5,
+        min_part_confidence=0.5,
 ):
     cv_keypoints = []
     for ii, score in enumerate(instance_scores):
@@ -65,55 +64,53 @@ def draw_keypoints(
     return cv2.drawKeypoints(img, cv_keypoints, outImage=np.array([]))
 
 
-def get_adjacent_keypoints(keypoint_scores, keypoint_coords, min_confidence=0.1):
+def get_adjacent_keypoints(keypoint_scores,
+                           keypoint_coords,
+                           min_confidence=0.1):
     results = []
     for left, right in posenet.CONNECTED_PART_INDICES:
-        if (
-            keypoint_scores[left] < min_confidence
-            or keypoint_scores[right] < min_confidence
-        ):
+        if (keypoint_scores[left] < min_confidence
+                or keypoint_scores[right] < min_confidence):
             continue
         results.append(
-            np.array(
-                [
-                    keypoint_coords[left][::-1] / scale_factor,
-                    keypoint_coords[right][::-1] / scale_factor,
-                ]
-            ).astype(np.int32),
-        )
+            np.array([
+                keypoint_coords[left][::-1] / scale_factor,
+                keypoint_coords[right][::-1] / scale_factor,
+            ]).astype(np.int32), )
     return results
 
 
 def draw_skeleton(
-    img,
-    instance_scores,
-    keypoint_scores,
-    keypoint_coords,
-    min_pose_confidence=0.5,
-    min_part_confidence=0.5,
+        img,
+        instance_scores,
+        keypoint_scores,
+        keypoint_coords,
+        min_pose_confidence=0.5,
+        min_part_confidence=0.5,
 ):
     out_img = img
     adjacent_keypoints = []
     for ii, score in enumerate(instance_scores):
         if score < min_pose_confidence:
             continue
-        new_keypoints = get_adjacent_keypoints(
-            keypoint_scores[ii, :], keypoint_coords[ii, :, :], min_part_confidence
-        )
+        new_keypoints = get_adjacent_keypoints(keypoint_scores[ii, :],
+                                               keypoint_coords[ii, :, :],
+                                               min_part_confidence)
         adjacent_keypoints.extend(new_keypoints)
-    out_img = cv2.polylines(
-        out_img, adjacent_keypoints, isClosed=False, color=(255, 255, 0)
-    )
+    out_img = cv2.polylines(out_img,
+                            adjacent_keypoints,
+                            isClosed=False,
+                            color=(255, 255, 0))
     return out_img
 
 
 def draw_skel_and_kp(
-    img,
-    instance_scores,
-    keypoint_scores,
-    keypoint_coords,
-    min_pose_score=0.3,
-    min_part_score=0.3,
+        img,
+        instance_scores,
+        keypoint_scores,
+        keypoint_coords,
+        min_pose_score=0.3,
+        min_part_score=0.3,
 ):
     out_img = img
     adjacent_keypoints = []
@@ -122,22 +119,23 @@ def draw_skel_and_kp(
         if score < min_pose_score:
             continue
 
-        new_keypoints = get_adjacent_keypoints(
-            keypoint_scores[ii, :], keypoint_coords[ii, :, :], min_part_score
-        )
+        new_keypoints = get_adjacent_keypoints(keypoint_scores[ii, :],
+                                               keypoint_coords[ii, :, :],
+                                               min_part_score)
         adjacent_keypoints.extend(new_keypoints)
 
         for ks, kc in zip(keypoint_scores[ii, :], keypoint_coords[ii, :, :]):
             if ks < min_part_score:
                 continue
             cv_keypoints.append(
-                cv2.KeyPoint(kc[1] / scale_factor, kc[0] / scale_factor, 10.0 * ks)
-            )
+                cv2.KeyPoint(kc[1] / scale_factor, kc[0] / scale_factor,
+                             10.0 * ks))
 
     # out_img = cv2.drawKeypoints(
     #    out_img, cv_keypoints, np.array([]), (0, 0, 255),flags=cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
     # return out_img
-    out_img2 = cv2.polylines(out_img, adjacent_keypoints, False, (255, 255, 0), 2)
+    out_img2 = cv2.polylines(out_img, adjacent_keypoints, False, (255, 255, 0),
+                             2)
     # out_img1 = cv2.drawKeypoints(
     #                 out_img, cv_keypoints, np.array([]), (0, 0, 255),flags=cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
     if out_img2 is None:

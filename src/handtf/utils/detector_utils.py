@@ -22,8 +22,7 @@ NUM_CLASSES = 2
 # load label map using utils provided by tensorflow object detection api
 label_map = label_map_util.load_labelmap(PATH_TO_LABELS)
 categories = label_map_util.convert_label_map_to_categories(
-    label_map, max_num_classes=NUM_CLASSES, use_display_name=True
-)
+    label_map, max_num_classes=NUM_CLASSES, use_display_name=True)
 category_index = label_map_util.create_category_index(categories)
 
 
@@ -54,14 +53,14 @@ def load_inference_graph():
 
 # Drawing bounding boxes and distances onto image
 def draw_box_on_image(
-    num_hands_detect,
-    score_thresh,
-    scores,
-    boxes,
-    classes,
-    im_width,
-    im_height,
-    image_np,
+        num_hands_detect,
+        score_thresh,
+        scores,
+        boxes,
+        classes,
+        im_width,
+        im_height,
+        image_np,
 ):
     # Determined using a piece of paper of known length, code can be found in distance to camera
     focalLength = 875
@@ -90,7 +89,8 @@ def draw_box_on_image(
             p1 = (int(left), int(top))
             p2 = (int(right), int(bottom))
 
-            dist = distance_to_camera(avg_width, focalLength, int(right - left))
+            dist = distance_to_camera(avg_width, focalLength,
+                                      int(right - left))
 
             cv2.rectangle(image_np, p1, p2, color, 3, 1)
 
@@ -127,9 +127,8 @@ def draw_box_on_image(
 
 # Show fps value on image.
 def draw_text_on_image(fps, image_np):
-    cv2.putText(
-        image_np, fps, (20, 50), cv2.FONT_HERSHEY_SIMPLEX, 0.75, (77, 255, 9), 2
-    )
+    cv2.putText(image_np, fps, (20, 50), cv2.FONT_HERSHEY_SIMPLEX, 0.75,
+                (77, 255, 9), 2)
 
 
 # compute and return the distance from the hand to the camera using triangle similarity
@@ -150,7 +149,8 @@ def detect_objects(image_np, detection_graph, sess):
     # Each score represent how level of confidence for each of the objects.
     # Score is shown on the result image, together with the class label.
     detection_scores = detection_graph.get_tensor_by_name("detection_scores:0")
-    detection_classes = detection_graph.get_tensor_by_name("detection_classes:0")
+    detection_classes = detection_graph.get_tensor_by_name(
+        "detection_classes:0")
     num_detections = detection_graph.get_tensor_by_name("num_detections:0")
 
     image_np_expanded = np.expand_dims(image_np, axis=0)

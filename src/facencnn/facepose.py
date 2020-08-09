@@ -68,14 +68,21 @@ class MyApp(App):
 
     def main(self):
         # creating a container VBox type, vertical (you can use also HBox or Widget)
-        main_container = gui.VBox(width=360, height=680, style={"margin": "0px auto"})
+        main_container = gui.VBox(width=360,
+                                  height=680,
+                                  style={"margin": "0px auto"})
 
         self.aidcam = OpencvVideoWidget(self, width=340, height=480)
         self.aidcam.style["margin"] = "10px"
 
         self.aidcam.set_identifier("myimage_receiver")
         main_container.append(self.aidcam)
-        self.lbl = gui.Label("This show fps!", width=360, height=30, margin="50px",)
+        self.lbl = gui.Label(
+            "This show fps!",
+            width=360,
+            height=30,
+            margin="50px",
+        )
         main_container.append(self.lbl)
 
         return main_container
