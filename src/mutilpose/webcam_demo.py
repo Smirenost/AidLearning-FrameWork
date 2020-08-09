@@ -1,6 +1,7 @@
-import posenet
 import argparse
 import time
+
+import posenet
 import tensorflow as tf
 from cvs import *
 

@@ -1,7 +1,8 @@
-from posenet.decode import *
-from posenet.constants import *
 import time
+
 import scipy.ndimage as ndi
+from posenet.constants import *
+from posenet.decode import *
 
 
 def within_nms_radius(poses, squared_nms_radius, point, keypoint_id):

@@ -1,9 +1,8 @@
-import datetime
 import argparse
-
-from utils import detector_utils as detector_utils
+import datetime
 
 from cvs import *
+from utils import detector_utils as detector_utils
 
 ap = argparse.ArgumentParser()
 ap.add_argument(

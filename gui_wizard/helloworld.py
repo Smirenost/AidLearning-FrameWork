@@ -1,10 +1,8 @@
 # -*- coding: utf-8 -*-
 
 
-from remi.gui import *
-
-
 from cvs import *
+from remi.gui import *
 
 
 class untitled(App):

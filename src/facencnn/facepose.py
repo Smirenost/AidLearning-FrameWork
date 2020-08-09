@@ -1,6 +1,6 @@
-from cvs import *
 import facerecognition
 import numpy as np
+from cvs import *
 
 
 def main():

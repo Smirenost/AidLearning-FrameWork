@@ -1,14 +1,15 @@
 # Utilities for object detector.
 
-import numpy as np
-import sys
-import tensorflow as tf
 import os
-from threading import Thread
-from datetime import datetime
-import cv2
-from utils import label_map_util
+import sys
 from collections import defaultdict
+from datetime import datetime
+from threading import Thread
+
+import cv2
+import numpy as np
+import tensorflow as tf
+from utils import label_map_util
 
 detection_graph = tf.Graph()
 

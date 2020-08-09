@@ -1,8 +1,8 @@
+import sys
+
 import cv2
 import numpy as np
-
 import posenet.constants
-import sys
 
 scale_factor = 1.0
 if sys.version_info < (3, 5):

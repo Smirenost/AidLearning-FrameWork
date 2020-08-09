@@ -1,5 +1,6 @@
-import yaml
 import os
+
+import yaml
 
 BASE_DIR = os.path.dirname(__file__)
 
