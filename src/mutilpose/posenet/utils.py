@@ -48,8 +48,7 @@ def draw_keypoints(
             if ks < min_part_confidence:
                 continue
             cv_keypoints.append(cv2.KeyPoint(kc[1], kc[0], 10. * ks))
-    out_img = cv2.drawKeypoints(img, cv_keypoints, outImage=np.array([]))
-    return out_img
+    return cv2.drawKeypoints(img, cv_keypoints, outImage=np.array([]))
 
 
 def get_adjacent_keypoints(keypoint_scores, keypoint_coords, min_confidence=0.1):

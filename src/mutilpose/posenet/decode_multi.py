@@ -5,10 +5,10 @@ import scipy.ndimage as ndi
 
 
 def within_nms_radius(poses, squared_nms_radius, point, keypoint_id):
-    for _, _, pose_coord in poses:
-        if np.sum((pose_coord[keypoint_id] - point) ** 2) <= squared_nms_radius:
-            return True
-    return False
+    return any(
+        np.sum((pose_coord[keypoint_id] - point) ** 2) <= squared_nms_radius
+        for _, _, pose_coord in poses
+    )
 
 
 def within_nms_radius_fast(pose_coords, squared_nms_radius, point):
