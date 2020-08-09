@@ -6,8 +6,14 @@ from utils import detector_utils as detector_utils
 from cvs import *
 
 ap = argparse.ArgumentParser()
-ap.add_argument('-d', '--display', dest='display', type=int,
-                default=1, help='Display the detected images using OpenCV. This reduces FPS')
+ap.add_argument(
+    "-d",
+    "--display",
+    dest="display",
+    type=int,
+    default=1,
+    help="Display the detected images using OpenCV. This reduces FPS",
+)
 args = vars(ap.parse_args())
 
 
@@ -49,26 +55,35 @@ def main():
 
             # Run image through tensorflow graph
             boxes, scores, classes = detector_utils.detect_objects(
-                frame, detection_graph, sess)
+                frame, detection_graph, sess
+            )
 
             # Draw bounding boxeses and text
             detector_utils.draw_box_on_image(
-                num_hands_detect, score_thresh, scores, boxes, classes, im_width, im_height, frame)
+                num_hands_detect,
+                score_thresh,
+                scores,
+                boxes,
+                classes,
+                im_width,
+                im_height,
+                frame,
+            )
 
             # Calculate Frames per second (FPS)
             num_frames += 1
-            elapsed_time = (datetime.datetime.now() -
-                            start_time).total_seconds()
+            elapsed_time = (datetime.datetime.now() - start_time).total_seconds()
             fps = num_frames / elapsed_time
 
             # Display FPS on frame
             lbs = "FPS : " + str("{0:.2f}".format(fps))
             cvs.setLbs(lbs)
 
-            if args['display']:
+            if args["display"]:
 
                 detector_utils.draw_text_on_image(
-                    "FPS : " + str("{0:.2f}".format(fps)), frame)
+                    "FPS : " + str("{0:.2f}".format(fps)), frame
+                )
 
                 cvs.imshow(cv2.cvtColor(frame, cv2.COLOR_RGB2BGR))
 
@@ -89,23 +104,21 @@ class MyApp(App):
     def main(self):
         # initcv(process)
         # creating a container VBox type, vertical (you can use also HBox or Widget)
-        main_container = gui.VBox(width=360, height=680, style={
-                                  'margin': '0px auto'})
+        main_container = gui.VBox(width=360, height=680, style={"margin": "0px auto"})
 
         self.aidcam = OpencvVideoWidget(self, width=340, height=480)
-        self.aidcam.style['margin'] = '10px'
+        self.aidcam.style["margin"] = "10px"
 
         self.aidcam.set_identifier("myimage_receiver")
         main_container.append(self.aidcam)
 
         # Display FPS on frame
-        self.lbl = gui.Label('This is a LABEL!', width=360,
-                             height=30, margin='10px')
+        self.lbl = gui.Label("This is a LABEL!", width=360, height=30, margin="10px")
         main_container.append(self.lbl)
 
         return main_container
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     initcv(main)
     startcv(MyApp)

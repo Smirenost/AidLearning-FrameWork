@@ -20,7 +20,7 @@ def main():
 
         fcount += 1
         # global lbs
-        lbs = 'Average FPS: ' + str(fcount / (time.time() - start))
+        lbs = "Average FPS: " + str(fcount / (time.time() - start))
         cvs.setLbs(lbs)
 
         if camid == 1:
@@ -33,26 +33,26 @@ def main():
         # print 'rets:',rets
         for ret in rets:
             # for ret in each:
-            print('draw bounding box for the face')
-            #cvs.infoshow('draw bounding box for the face')
-            rect = ret['rect']
+            print("draw bounding box for the face")
+            # cvs.infoshow('draw bounding box for the face')
+            rect = ret["rect"]
             # print rect
-            mtcnn = ret['mtcnn']
+            mtcnn = ret["mtcnn"]
             # print mtcnn
             for i in range(5):
-                cvs.circle(img, (mtcnn[i], mtcnn[5+i]), 2, (0, 0, 255), 2)
-            keypoint = ret['keypoints']
+                cvs.circle(img, (mtcnn[i], mtcnn[5 + i]), 2, (0, 0, 255), 2)
+            keypoint = ret["keypoints"]
             # print keypoint
             p1 = (int(rect[0]), int(rect[1]))
-            p2 = (int(rect[0]+rect[2]), int(rect[1]+rect[3]))
+            p2 = (int(rect[0] + rect[2]), int(rect[1] + rect[3]))
 
-            #draw_name(img, rect, ret['name'])
+            # draw_name(img, rect, ret['name'])
             cvs.rectangle(img, p1, p2, (0, 255, 0), 3, 1)
             for p in range(106):
                 # print p*2,' = ',keypoint[p*2]
                 # print p*2+1,' = ',keypoint[p*2+1]
-                k1 = int(rect[0]+keypoint[p*2])
-                k2 = int(rect[1]+keypoint[p*2+1])
+                k1 = int(rect[0] + keypoint[p * 2])
+                k2 = int(rect[1] + keypoint[p * 2 + 1])
                 cv2.circle(img, (k1, k2), 2, (253, 0, 0), 2)
 
         cvs.imshow(img)
@@ -68,22 +68,20 @@ class MyApp(App):
 
     def main(self):
         # creating a container VBox type, vertical (you can use also HBox or Widget)
-        main_container = gui.VBox(width=360, height=680, style={
-                                  'margin': '0px auto'})
+        main_container = gui.VBox(width=360, height=680, style={"margin": "0px auto"})
 
         self.aidcam = OpencvVideoWidget(self, width=340, height=480)
-        self.aidcam.style['margin'] = '10px'
+        self.aidcam.style["margin"] = "10px"
 
         self.aidcam.set_identifier("myimage_receiver")
         main_container.append(self.aidcam)
-        self.lbl = gui.Label('This show fps!', width=360,
-                             height=30,  margin='50px',)
+        self.lbl = gui.Label("This show fps!", width=360, height=30, margin="50px",)
         main_container.append(self.lbl)
 
         return main_container
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
 
     initcv(main)
     startcv(MyApp)

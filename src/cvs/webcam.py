@@ -1,4 +1,3 @@
-
 # -*- coding: utf-8 -*-
 
 from cvs import *
@@ -7,9 +6,8 @@ from cvs import *
 class untitled(App):
     def __init__(self, *args, **kwargs):
         # DON'T MAKE CHANGES HERE, THIS METHOD GETS OVERWRITTEN WHEN SAVING IN THE EDITOR
-        if 'editing_mode' not in kwargs.keys():
-            super(untitled, self).__init__(
-                *args, static_file_path={'my_res': './res/'})
+        if "editing_mode" not in kwargs.keys():
+            super(untitled, self).__init__(*args, static_file_path={"my_res": "./res/"})
 
     def idle(self):
         # idle function called every update cycle
@@ -24,14 +22,24 @@ class untitled(App):
         aidcam = OpencvVideoWidget(self)
         # aidcam.attributes.update({"src":"/528175722896/get_image_data","editor_newclass":"False","editor_baseclass":"OpencvVideoWidget","editor_constructor":"()","class":"OpencvVideoWidget","editor_tag_type":"widget","editor_varname":"aidcam"})
         aidcam.set_identifier("myimage_receiver")
-        aidcam.style.update({"width": "190px", "position": "absolute", "top": "20px",
-                             "left": "20px", "margin": "0px", "overflow": "auto", "height": "177px"})
+        aidcam.style.update(
+            {
+                "width": "190px",
+                "position": "absolute",
+                "top": "20px",
+                "left": "20px",
+                "margin": "0px",
+                "overflow": "auto",
+                "height": "177px",
+            }
+        )
 
         self.aidcam = aidcam
         return self.aidcam
 
 
 # processing_code
+
 
 def process():
 

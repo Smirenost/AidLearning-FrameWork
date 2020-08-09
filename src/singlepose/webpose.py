@@ -1,10 +1,9 @@
-
 import time
 import numpy as np
 import tensorflow as tf
 from cvs import *
 
-print('import tensorflow.....wait...')
+print("import tensorflow.....wait...")
 
 imageSize = 257
 width = imageSize
@@ -15,10 +14,10 @@ def load_model(PATH_TO_CKPT):
     detection_graph = tf.Graph()
     with detection_graph.as_default():
         od_graph_def = tf.GraphDef()
-        with tf.gfile.GFile(PATH_TO_CKPT, 'rb') as fid:
+        with tf.gfile.GFile(PATH_TO_CKPT, "rb") as fid:
             serialized_graph = fid.read()
             od_graph_def.ParseFromString(serialized_graph)
-            tf.import_graph_def(od_graph_def, name='')
+            tf.import_graph_def(od_graph_def, name="")
     return detection_graph
 
 
@@ -36,13 +35,11 @@ def main():
     detection_graph = load_model("frozen_model.pb")
     with detection_graph.as_default():
         with tf.Session(graph=detection_graph) as sess:
-            image = detection_graph.get_tensor_by_name('image:0')
-            heatmaps = detection_graph.get_tensor_by_name('heatmap:0')
-            offsets = detection_graph.get_tensor_by_name('offset_2:0')
-            displacementFwd = detection_graph.get_tensor_by_name(
-                'displacement_fwd_2:0')
-            displacementBwd = detection_graph.get_tensor_by_name(
-                'displacement_bwd_2:0')
+            image = detection_graph.get_tensor_by_name("image:0")
+            heatmaps = detection_graph.get_tensor_by_name("heatmap:0")
+            offsets = detection_graph.get_tensor_by_name("offset_2:0")
+            displacementFwd = detection_graph.get_tensor_by_name("displacement_fwd_2:0")
+            displacementBwd = detection_graph.get_tensor_by_name("displacement_bwd_2:0")
 
             fcount = -1
             start = time.time()
@@ -55,7 +52,7 @@ def main():
 
                 fcount += 1
                 # global lbs
-                lbs = 'Average FPS: ' + str(fcount / (time.time() - start))
+                lbs = "Average FPS: " + str(fcount / (time.time() - start))
                 cvs.setLbs(lbs)
 
                 input_image = resizeimg(img, width, height)
@@ -64,15 +61,49 @@ def main():
 
                 input_image = np.array(input_image, dtype=np.float32)
                 input_image = input_image.reshape(1, width, height, 3)
-                heatmaps_result, offsets_result, displacementFwd_result, displacementBwd_result = sess.run(
-                    [heatmaps, offsets, displacementFwd, displacementBwd], feed_dict={image: input_image})
-                colors = [[255, 0, 0], [255, 170, 0], [255, 170, 0], [255, 255, 0], [255, 255, 0], [170, 255, 0], [170, 255, 0], [0, 255, 0],
-                          [0, 255, 0], [0, 255, 170], [0, 255, 170], [
-                              0, 170, 255], [0, 170, 255], [0, 0, 255], [0, 0, 255],
-                          [255, 0, 255], [255, 0, 255]]
+                (
+                    heatmaps_result,
+                    offsets_result,
+                    displacementFwd_result,
+                    displacementBwd_result,
+                ) = sess.run(
+                    [heatmaps, offsets, displacementFwd, displacementBwd],
+                    feed_dict={image: input_image},
+                )
+                colors = [
+                    [255, 0, 0],
+                    [255, 170, 0],
+                    [255, 170, 0],
+                    [255, 255, 0],
+                    [255, 255, 0],
+                    [170, 255, 0],
+                    [170, 255, 0],
+                    [0, 255, 0],
+                    [0, 255, 0],
+                    [0, 255, 170],
+                    [0, 255, 170],
+                    [0, 170, 255],
+                    [0, 170, 255],
+                    [0, 0, 255],
+                    [0, 0, 255],
+                    [255, 0, 255],
+                    [255, 0, 255],
+                ]
 
-                pairs = [[5, 6], [5, 7], [6, 8], [7, 9], [8, 10], [5, 11], [
-                    6, 12], [11, 12], [11, 13], [12, 14], [13, 15], [14, 16]]
+                pairs = [
+                    [5, 6],
+                    [5, 7],
+                    [6, 8],
+                    [7, 9],
+                    [8, 10],
+                    [5, 11],
+                    [6, 12],
+                    [11, 12],
+                    [11, 13],
+                    [12, 14],
+                    [13, 15],
+                    [14, 16],
+                ]
                 keypoint = []
                 ckeypoint = []
 
@@ -88,16 +119,15 @@ def main():
 
                     ry = re[0][0]
                     rx = re[1][0]
-                    offsets_resulty = bbb[0+k]
-                    offsets_resultx = bbb[17+k]
-                    ofx = int(offsets_resultx[ry][rx]+0.5)
-                    ofy = int(offsets_resulty[ry][rx]+0.5)
+                    offsets_resulty = bbb[0 + k]
+                    offsets_resultx = bbb[17 + k]
+                    ofx = int(offsets_resultx[ry][rx] + 0.5)
+                    ofy = int(offsets_resulty[ry][rx] + 0.5)
 
-                    px = (rx)*16+ofx
-                    py = (ry)*16+ofy
+                    px = (rx) * 16 + ofx
+                    py = (ry) * 16 + ofy
                     if maxheat > 0.7:
-                        cvs.circle(tmpimg, (int(px), int(py)),
-                                   3, colors[k], -1)
+                        cvs.circle(tmpimg, (int(px), int(py)), 3, colors[k], -1)
                         keypoint.append(int(px))
                         keypoint.append(int(py))
                     else:
@@ -115,18 +145,23 @@ def main():
                     #     ckeypoint.append(keypoint[2*i+1])
                     #     print ('chang:',i,'to',i+1)
                     # else :
-                    ckeypoint.append(keypoint[2*i])
-                    ckeypoint.append(keypoint[2*i+1])
-                    ckeypoint.append(keypoint[2*i+2])
-                    ckeypoint.append(keypoint[2*i+2+1])
+                    ckeypoint.append(keypoint[2 * i])
+                    ckeypoint.append(keypoint[2 * i + 1])
+                    ckeypoint.append(keypoint[2 * i + 2])
+                    ckeypoint.append(keypoint[2 * i + 2 + 1])
 
                 for pair in pairs:
-                    if ckeypoint[2*pair[0]] > 0 and ckeypoint[2*pair[1]] > 0:
-                        cvs.line(tmpimg, (ckeypoint[2*pair[0]], ckeypoint[2*pair[0]+1]),
-                                 (ckeypoint[2*pair[1]], ckeypoint[2*pair[1]+1]), (0, 0, 255), 1)
+                    if ckeypoint[2 * pair[0]] > 0 and ckeypoint[2 * pair[1]] > 0:
+                        cvs.line(
+                            tmpimg,
+                            (ckeypoint[2 * pair[0]], ckeypoint[2 * pair[0] + 1]),
+                            (ckeypoint[2 * pair[1]], ckeypoint[2 * pair[1] + 1]),
+                            (0, 0, 255),
+                            1,
+                        )
 
                 cvs.imshow(tmpimg)
-                print('frames:', fcount)
+                print("frames:", fcount)
 
 
 class MyApp(App):
@@ -139,18 +174,18 @@ class MyApp(App):
 
     def main(self):
         # creating a container VBox type, vertical (you can use also HBox or Widget)
-        main_container = gui.VBox(width=360, height=680, style={
-                                  'margin': '0px auto'})
+        main_container = gui.VBox(width=360, height=680, style={"margin": "0px auto"})
 
         self.aidcam = OpencvVideoWidget(self, width=340, height=480)
-        self.aidcam.style['margin'] = '10px'
+        self.aidcam.style["margin"] = "10px"
 
         self.aidcam.set_identifier("myimage_receiver")
         main_container.append(self.aidcam)
 
         # label show fps
-        self.lbl = gui.Label('This show FPS!', width=360,
-                             height=30, left='100px', margin='10px')
+        self.lbl = gui.Label(
+            "This show FPS!", width=360, height=30, left="100px", margin="10px"
+        )
         main_container.append(self.lbl)
 
         return main_container
