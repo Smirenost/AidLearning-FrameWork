@@ -4,10 +4,8 @@ class MyApp(App):
         super(MyApp, self).__init__(*args)
 
     def main(self):
-        lbl = gui.Label("Hello world!", width=100, height=30)
-
         # return of the root widget
-        return lbl
+        return gui.Label("Hello world!", width=100, height=30)
 
 initcv(cvs.openwin)
 startcv(MyApp)

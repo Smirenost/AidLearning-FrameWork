@@ -86,7 +86,6 @@ class MyApp(App):
     def idle(self):
         #idle function called every update cycle,we show the FPS
         self.lbl.set_text(cvs.getLbs())
-        pass
         
     def main(self):
         #creating a container VBox type, vertical (you can use also HBox or Widget)

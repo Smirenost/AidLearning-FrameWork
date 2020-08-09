@@ -38,7 +38,7 @@ def main():
                 continue
             frame = cv2.resize(frame, (640, 480))
 
-            if im_height == None:
+            if im_height is None:
                 im_height, im_width = frame.shape[:2]
 
             # Convert image to rgb since opencv loads images in bgr, if not accuracy will decrease
@@ -50,8 +50,8 @@ def main():
             # Run image through tensorflow graph
             boxes, scores, classes = detector_utils.detect_objects(
                 frame, detection_graph, sess)
-            
-            
+
+
             # Draw bounding boxeses and text
             detector_utils.draw_box_on_image(
                 num_hands_detect, score_thresh, scores, boxes, classes, im_width, im_height, frame)
@@ -61,21 +61,21 @@ def main():
             elapsed_time = (datetime.datetime.now() -
                             start_time).total_seconds()
             fps = num_frames / elapsed_time
-            
+
             # Display FPS on frame
             lbs = "FPS : " + str("{0:.2f}".format(fps))
             cvs.setLbs(lbs)
 
             if args['display']:
-                
+
                 detector_utils.draw_text_on_image("FPS : " + str("{0:.2f}".format(fps)), frame)
 
                 cvs.imshow(cv2.cvtColor(frame, cv2.COLOR_RGB2BGR))
 
-        
+
         print("Average FPS: ", str("{0:.2f}".format(fps)))
 
-        
+
 
     except KeyboardInterrupt:
         print("Average FPS: ", str("{0:.2f}".format(fps)))
@@ -88,7 +88,6 @@ class MyApp(App):
     def idle(self):
         #idle function called every update cycle
         self.lbl.set_text(cvs.getLbs())
-        pass
     
     def main(self):
         # initcv(process)

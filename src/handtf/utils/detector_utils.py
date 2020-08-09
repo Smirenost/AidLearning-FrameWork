@@ -67,9 +67,7 @@ def draw_box_on_image(num_hands_detect, score_thresh, scores, boxes, classes, im
                 id ='closed'
                 avg_width = 3.0 # To compensate bbox size change
 
-            if i == 0: color = color0
-            else: color = color1
-
+            color = color0 if i == 0 else color1
             (left, right, top, bottom) = (boxes[i][1] * im_width, boxes[i][3] * im_width,
                                           boxes[i][0] * im_height, boxes[i][2] * im_height)
             p1 = (int(left), int(top))

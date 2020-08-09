@@ -54,8 +54,8 @@ class MyApp(App):
         table.set_column_count(int(value))
 
     def fill_table(self, emitter, table):
-        for ri in range(0, table.row_count()):
-            for ci in range(0, table.column_count()):
+        for ri in range(table.row_count()):
+            for ci in range(table.column_count()):
                 table.item_at(ri, ci).set_text("row:%s,column:%s"%(str(ri),str(ci)))
 
     def on_use_title_change(self, emitter, value, table):

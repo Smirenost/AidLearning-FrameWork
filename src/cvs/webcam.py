@@ -7,7 +7,7 @@ from cvs import *
 class untitled(App):
     def __init__(self, *args, **kwargs):
         #DON'T MAKE CHANGES HERE, THIS METHOD GETS OVERWRITTEN WHEN SAVING IN THE EDITOR
-        if not 'editing_mode' in kwargs.keys():
+        if 'editing_mode' not in kwargs.keys():
             super(untitled, self).__init__(*args, static_file_path={'my_res':'./res/'})
 
     def idle(self):

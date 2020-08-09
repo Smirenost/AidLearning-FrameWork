@@ -25,11 +25,10 @@ def load_config(model_ord):
     output_stride = converter_cfg['outputStride']
     checkpoint_name = checkpoints[model_ord]
 
-    model_cfg = {
+    return {
         'output_stride': output_stride,
         'checkpoint_name': checkpoint_name,
     }
-    return model_cfg
 
 
 def load_model(model_id, sess, model_dir=MODEL_DIR):
