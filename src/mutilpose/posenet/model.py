@@ -34,7 +34,8 @@ def load_config(model_ord):
 def load_model(model_id, sess, model_dir=MODEL_DIR):
     model_ord = model_id_to_ord(model_id)
     model_cfg = load_config(model_ord)
-    model_path = os.path.join(model_dir, 'model-%s.pb' % model_cfg['checkpoint_name'])
+    model_path = os.path.join(model_dir, 'model-%s.pb' %
+                              model_cfg['checkpoint_name'])
     if not os.path.exists(model_path):
         print('Cannot find model file %s, converting from tfjs...' % model_path)
         from posenet.converter.tfjs2python import convert

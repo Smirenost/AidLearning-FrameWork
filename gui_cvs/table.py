@@ -1,10 +1,13 @@
 from cvs import *
+
+
 class MyApp(App):
     def __init__(self, *args):
         super(MyApp, self).__init__(*args)
 
     def main(self):
-        wid = gui.VBox(width=500, height=500, style={'margin':'5px auto', 'padding': '10px'})
+        wid = gui.VBox(width=500, height=500, style={
+                       'margin': '5px auto', 'padding': '10px'})
 
         lbl_description = gui.Label("""Example about TableWidget usage.
                                     Change rows and columns count in order to see the behaviour. 
@@ -56,17 +59,17 @@ class MyApp(App):
     def fill_table(self, emitter, table):
         for ri in range(table.row_count()):
             for ci in range(table.column_count()):
-                table.item_at(ri, ci).set_text("row:%s,column:%s"%(str(ri),str(ci)))
+                table.item_at(ri, ci).set_text(
+                    "row:%s,column:%s" % (str(ri), str(ci)))
 
     def on_use_title_change(self, emitter, value, table):
         value = value == 'true'
         table.set_use_title(value)
 
     def on_table_item_changed(self, table, item, new_value, row, column):
-        print("text: %s    row: %s    column: %s"%(new_value, row, column))
+        print("text: %s    row: %s    column: %s" % (new_value, row, column))
 
 
 if __name__ == "__main__":
     initcv(cvs.openwin)
     startcv(MyApp)
-

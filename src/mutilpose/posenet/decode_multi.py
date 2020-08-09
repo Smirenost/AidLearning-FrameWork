@@ -35,7 +35,8 @@ def get_instance_score_fast(
         keypoint_scores, keypoint_coords):
 
     if exist_pose_coords.shape[0]:
-        s = np.sum((exist_pose_coords - keypoint_coords) ** 2, axis=2) > squared_nms_radius
+        s = np.sum((exist_pose_coords - keypoint_coords)
+                   ** 2, axis=2) > squared_nms_radius
         not_overlapped_scores = np.sum(keypoint_scores[np.all(s, axis=0)])
     else:
         not_overlapped_scores = np.sum(keypoint_scores)
@@ -112,15 +113,18 @@ def decode_multiple_poses(
 
     squared_nms_radius = nms_radius ** 2
 
-    scored_parts = build_part_with_score_fast(score_threshold, LOCAL_MAXIMUM_RADIUS, scores)
+    scored_parts = build_part_with_score_fast(
+        score_threshold, LOCAL_MAXIMUM_RADIUS, scores)
     scored_parts = sorted(scored_parts, key=lambda x: x[0], reverse=True)
 
     # change dimensions from (h, w, x) to (h, w, x//2, 2) to allow return of complete coord array
     height = scores.shape[0]
     width = scores.shape[1]
     offsets = offsets.reshape(height, width, 2, -1).swapaxes(2, 3)
-    displacements_fwd = displacements_fwd.reshape(height, width, 2, -1).swapaxes(2, 3)
-    displacements_bwd = displacements_bwd.reshape(height, width, 2, -1).swapaxes(2, 3)
+    displacements_fwd = displacements_fwd.reshape(
+        height, width, 2, -1).swapaxes(2, 3)
+    displacements_bwd = displacements_bwd.reshape(
+        height, width, 2, -1).swapaxes(2, 3)
 
     for root_score, root_id, root_coord in scored_parts:
         root_image_coords = root_coord * output_stride + offsets[

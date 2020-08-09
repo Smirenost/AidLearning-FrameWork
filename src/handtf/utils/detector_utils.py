@@ -38,13 +38,13 @@ def load_inference_graph():
             serialized_graph = fid.read()
             od_graph_def.ParseFromString(serialized_graph)
             tf.import_graph_def(od_graph_def, name='')
-        
-        config = tf.ConfigProto(device_count={"CPU": 4},
-            inter_op_parallelism_threads = 1, 
-            intra_op_parallelism_threads = 4,
-            log_device_placement=True)
 
-        sess = tf.Session(config=config,graph=detection_graph)
+        config = tf.ConfigProto(device_count={"CPU": 4},
+                                inter_op_parallelism_threads=1,
+                                intra_op_parallelism_threads=4,
+                                log_device_placement=True)
+
+        sess = tf.Session(config=config, graph=detection_graph)
     print(">  ====== Inference graph loaded.")
     return detection_graph, sess
 
@@ -58,14 +58,15 @@ def draw_box_on_image(num_hands_detect, score_thresh, scores, boxes, classes, im
     avg_width = 4.0
     # To more easily differetiate distances and detected bboxes
     color = None
-    color0 = (255,0,0)
-    color1 = (0,50,255)
+    color0 = (255, 0, 0)
+    color1 = (0, 50, 255)
     for i in range(num_hands_detect):
         if (scores[i] > score_thresh):
-            if classes[i] == 1: id = 'open'
+            if classes[i] == 1:
+                id = 'open'
             if classes[i] == 2:
-                id ='closed'
-                avg_width = 3.0 # To compensate bbox size change
+                id = 'closed'
+                avg_width = 3.0  # To compensate bbox size change
 
             color = color0 if i == 0 else color1
             (left, right, top, bottom) = (boxes[i][1] * im_width, boxes[i][3] * im_width,
@@ -75,17 +76,17 @@ def draw_box_on_image(num_hands_detect, score_thresh, scores, boxes, classes, im
 
             dist = distance_to_camera(avg_width, focalLength, int(right-left))
 
-            cv2.rectangle(image_np, p1, p2, color , 3, 1)
+            cv2.rectangle(image_np, p1, p2, color, 3, 1)
 
             cv2.putText(image_np, 'hand '+str(i)+': '+id, (int(left), int(top)-5),
-                        cv2.FONT_HERSHEY_SIMPLEX, 0.5 , color, 2)
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
 
             cv2.putText(image_np, 'confidence: '+str("{0:.2f}".format(scores[i])),
-                        (int(left),int(top)-20),
-                        cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0,255,0), 2)
+                        (int(left), int(top)-20),
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
 
             cv2.putText(image_np, 'distance: '+str("{0:.2f}".format(dist)+' inches'),
-                        (int(im_width*0.7),int(im_height*0.9+30*i)),
+                        (int(im_width*0.7), int(im_height*0.9+30*i)),
                         cv2.FONT_HERSHEY_SIMPLEX, 0.75, color, 2)
 
 
@@ -94,10 +95,14 @@ def draw_text_on_image(fps, image_np):
     cv2.putText(image_np, fps, (20, 50),
                 cv2.FONT_HERSHEY_SIMPLEX, 0.75, (77, 255, 9), 2)
 # compute and return the distance from the hand to the camera using triangle similarity
+
+
 def distance_to_camera(knownWidth, focalLength, pixelWidth):
     return (knownWidth * focalLength) / pixelWidth
 
 # Actual detection .. generate scores and bounding boxes given an image
+
+
 def detect_objects(image_np, detection_graph, sess):
     # Definite input and output Tensors for detection_graph
     image_tensor = detection_graph.get_tensor_by_name('image_tensor:0')
