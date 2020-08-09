@@ -12,7 +12,7 @@ class MyApp(App):
 
         lbl_description = gui.Label(
             """Example about TableWidget usage.
-                                    Change rows and columns count in order to see the behaviour. 
+                                    Change rows and columns count in order to see the behaviour.
                                     After changing the size, 'Fill the table' content by means of the button."""
         )
 
